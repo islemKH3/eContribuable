@@ -1,0 +1,142 @@
+<div class="body">
+
+    <header>
+        <nav class="navbar">
+            <span class="material-symbols-rounded menu-btn" (click)="toggleMenu()">notes</span>
+
+            <div class="side-menu" [class.active]="menuOpen">
+
+                <a routerLink="/page_user" class="logo-full">
+                    <img src="/images/logo.png" alt="logo">
+                    <p>e-Contribuable</p>
+                </a>
+                
+                <div>
+                    <p>NAVIGATION</p>
+                    <a routerLink="/page_user" class="link">
+                        <span class="material-symbols-rounded nav-btn">home</span>
+                        <span>Accueil</span>
+                    </a>
+                </div>
+
+                <div>
+                    <p>RECLAMATIONS</p>
+
+                    <a routerLink="/submit_rec" class="link selected">
+                        <span class="material-symbols-rounded nav-btn">add_circle</span>
+                        <span>Soumettre une réclamation</span>
+                    </a>
+
+                    <a routerLink="/consult_rec" class="link">
+                        <span class="material-symbols-rounded nav-btn">search</span>
+                        <span>Consulter vos réclamations</span>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
+
+            <a routerLink="/page_user" class="logo">
+                <img src="/images/logo.png" alt="logo">
+                <p>e-Contribuable</p>
+            </a>
+            <div class="btn">
+                <span class="material-symbols-rounded notif-btn" (click)="toggleNotifs()">notifications</span>
+                <span class="material-symbols-rounded settings-btn" (click)="toggleSettings()">settings</span>
+            </div>
+
+            <div class="dropdown notifs" [class.active]="notifsOpen">
+
+                <div *ngIf="notifications.length === 0 && notifications_read.length === 0" class="empty">
+                    Aucune notification
+                </div>
+
+                <ul *ngIf="notifications.length > 0">
+                    <li *ngFor="let notif of notifications" (click)="markAsRead(notif)" class="not_unread">
+                        <div class="notif-content">{{ notif.content }}</div>
+                        <div class="notif-date">{{ notif.date | date:'short' }}</div>
+                    </li>
+                </ul>
+
+                <ul *ngIf="notifications_read.length > 0">
+                    <li *ngFor="let notif of notifications_read" (click)="markAsRead(notif)" class="not_read">
+                        <div class="notif-content">{{ notif.content }}</div>
+                        <div class="notif-date">{{ notif.date | date:'short' }}</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown settings" [class.active]="settingsOpen">
+                <div class="user">
+                    <p>{{this.displayName}}</p>
+                </div>
+                <div class="setting">
+                    <div class="param" (click)="goProfile()">
+                        <span class="material-symbols-rounded">account_circle</span>
+                        <p>Profil</p>
+                    </div>
+
+                    <div class="param" (click)="logout()">
+                        <span class="material-symbols-rounded logout-btn" (click)="logout()">logout</span>
+                        <p>Se déconnecter</p>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+    </header>
+
+    <div class="error-container">
+        <div *ngIf="errorVisible" class="error-message">
+            {{ errorMessage }}
+            <span class="close-btn" (click)="dismissErrorMessage()">&times;</span>
+        </div>
+
+        <div *ngIf="acceptVisible" class="approve-message">
+            {{ acceptMessage }}
+            <span class="close-btn" (click)="dismissAcceptMessage()">&times;</span>
+        </div>
+    </div>
+
+
+    <div class="content-wrapper">
+        <p>
+            Réclamations / <strong>Soumettre une réclamation</strong>
+        </p>
+        <div class="content-container">
+            
+            <form (ngSubmit)="onSubmit()">
+                <div class="input-field">
+                    <label for="objet">Objet</label>
+                    <input type="text" name="objet" [(ngModel)]="objet" placeholder="Entrer votre objet">
+                </div>
+                <div class="input-field">
+                    <label for="message">Contenu</label>
+                    <textarea name="message" [(ngModel)]="message" placeholder="Ecrivez votre contenu ici..."></textarea>
+                </div>
+                <div class="input-field file-upload-field">
+                    <label for="file-upload" class="custom-file-upload">
+                        <span class="material-symbols-rounded pin">attach_file_add</span>
+                        Sélectionner un fichier
+                    </label>
+                    <input id="file-upload" type="file" (change)="onFileChange($event)" multiple>
+                    <span class="file-names">
+                        {{ selectedFilesNames.length > 0 ? selectedFilesNames.join(', ') : 'Aucun fichier choisi' }}
+                    </span>
+                </div>
+    
+                <div class="overlay" *ngIf="loading">
+                    <div class="spinner"></div>
+                </div>
+
+                <button type="submit" class="form" [disabled]="loading">Envoyer</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 e-Contribuable - Tous droits réservés</p>
+    </footer>
+
+</div>

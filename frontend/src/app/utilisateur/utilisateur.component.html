@@ -1,0 +1,174 @@
+<div class="body">
+
+  <header>
+    <nav class="navbar">
+      <span class="material-symbols-rounded menu-btn" (click)="toggleMenu()">notes</span>
+      <div class="side-menu" [class.active]="menuOpen">
+
+        <a routerLink="/page_admin" class="logo-full">
+            <img src="/images/logo.png" alt="logo">
+            <p>e-Contribuable</p>
+        </a>
+        
+        <div>
+          <p>NAVIGATION</p>
+          <a routerLink="/page_admin" class="link">
+            <span class="material-symbols-rounded nav-btn">home</span>
+            <span>Accueil</span>
+          </a>
+        </div>
+                
+        <div>
+          <p>RECLAMATIONS</p>
+          <a routerLink="/admin_rec" class="link">
+            <span class="material-symbols-rounded nav-btn">quick_reference</span>
+            <span>Réclamations fiscales</span>
+          </a>
+        </div>
+                
+        <div>
+          <p>UTILISATEURS</p>
+
+          <a routerLink="/utilisateur" class="link selected">
+            <span class="material-symbols-rounded nav-btn">group</span>
+            <span>Contribuables inscrits</span>
+          </a>
+                    
+          <a routerLink="/inscription" class="link">
+            <span class="material-symbols-rounded nav-btn">manage_accounts</span>
+            <span>Demandes d'inscription</span>
+          </a>
+        </div>
+                
+
+        <div>
+          <p>CONVERSATIONS</p>
+          <a routerLink="/admin_chatbot" class="link">
+            <span class="material-symbols-rounded nav-btn">forum</span>
+            <span>Entre chatbot et utilisateurs</span>
+          </a>
+        </div>
+        
+      </div>
+
+      <div class="overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
+
+      <a routerLink="/page_admin" class="logo">
+        <img src="/images/logo.png" alt="logo">
+        <p>e-Contribuable</p>
+      </a>
+      <div class="btn">
+        <span class="material-symbols-rounded notif-btn" (click)="toggleNotifs()">notifications</span>
+        <span class="material-symbols-rounded settings-btn" (click)="toggleSettings()">settings</span>
+      </div>
+      
+      <div class="dropdown notifs" [class.active]="notifsOpen">
+
+        <div *ngIf="notifications.length === 0 && notifications_read.length === 0" class="empty">
+          Aucune notification
+        </div>
+
+        <ul *ngIf="notifications.length > 0">
+          <li *ngFor="let notif of notifications" (click)="markAsRead(notif)" class="not_unread">
+            <div class="notif-content">{{ notif.content }}</div>
+            <div class="notif-date">{{ notif.date | date:'short' }}</div>
+          </li>
+        </ul>
+
+        <ul *ngIf="notifications_read.length > 0">
+          <li *ngFor="let notif of notifications_read" (click)="markAsRead(notif)" class="not_read">
+            <div class="notif-content">{{ notif.content }}</div>
+            <div class="notif-date">{{ notif.date | date:'short' }}</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dropdown settings" [class.active]="settingsOpen">
+        <div class="user">
+          <p>{{this.displayName}}</p>
+        </div>
+        <div class="setting">
+          <div class="param" (click)="goProfile()">
+            <span class="material-symbols-rounded">account_circle</span>
+            <p>Profil</p>
+          </div>
+
+          <div class="param" (click)="logout()">
+            <span class="material-symbols-rounded logout-btn" (click)="logout()">logout</span>
+            <p>Se déconnecter</p>
+          </div>
+        </div>                
+      </div>
+
+    </nav>
+  </header>
+
+    <div class="content-wrapper">
+
+        <p>
+            Utilisateurs / <strong>Contribuables inscrits</strong>
+        </p>
+
+        <table class="content-container" *ngIf="utilisateurs.length > 0">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Type</th>
+                    <th>Email</th>
+                    <th>Date approbation</th>
+                    <th>Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of utilisateurs">
+                    <td>{{ user.id }}</td>
+                    <td *ngIf="user.raison_sociale">{{user.raison_sociale}}</td>
+                    <td *ngIf="user.nom">{{user.nom}} {{user.prenom}}</td>
+                    <td>{{user.type}}</td>
+                    <td>{{ user.email}}</td>
+                    <td>{{user.date_approuv | date:'short' }}</td>
+                    <td>
+                      <span (click)="loadUserDetails(user)" class="material-symbols-rounded">expand_content</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p *ngIf="!loading && utilisateurs.length === 0">Pas de utilisateurs trouvés.</p>
+
+        <div *ngIf="selectedDetails" class="details-overlay" (click)="selectedDetails = null">
+            <div class="details-box" (click)="$event.stopPropagation()">
+              <h3>ID de Client Fiscal: {{selectedDetails.id}}</h3>
+
+              <strong>Email: </strong>{{selectedDetails.email}}
+              <br>
+              <strong>Date approbation du compte: </strong>{{selectedDetails.date_approuv | date:'short' }}
+              <br>
+              <strong>Type contribuable: </strong>{{selectedDetails.type}}
+              <br>
+              <strong>NIF: </strong>{{selectedDetails.nif}}
+              
+              <div *ngIf="selectedDetails.raison_sociale"><strong>Raison social: </strong>{{selectedDetails.raison_sociale}}</div>
+              
+              <div *ngIf="selectedDetails.nom"><strong>Nom et prénom: </strong>{{selectedDetails.nom}} {{selectedDetails.prenom}}</div>
+
+              <div *ngIf="selectedDetails.cin"><strong>CIN: </strong>{{selectedDetails.cin}}</div>
+
+              <div *ngIf="selectedDetails.registre_commerce"><strong>Registre commerce: </strong>{{selectedDetails.registre_commerce}}</div>
+
+              <div *ngIf="selectedDetails.date_creation"><strong>Date de création: </strong>{{selectedDetails.date_creation}}</div>
+
+              <div *ngIf="selectedDetails.date_naissance"><strong>Date de naissance: </strong>{{selectedDetails.date_naissance}}</div>
+              
+              
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 e-Contribuable - Tous droits réservés.</p>
+    </footer>
+
+</div>

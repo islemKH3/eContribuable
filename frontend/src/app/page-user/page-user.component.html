@@ -1,0 +1,195 @@
+<div class="body">
+
+    <header>
+        <nav class="navbar">
+            <span class="material-symbols-rounded menu-btn" (click)="toggleMenu()">notes</span>
+
+            <div class="side-menu" [class.active]="menuOpen">
+
+                <a routerLink="/page_user" class="logo-full">
+                    <img src="/images/logo.png" alt="logo">
+                    <p>e-Contribuable</p>
+                </a>
+
+                <div>
+                    <p>NAVIGATION</p>
+                    <a routerLink="/page_user" class="link selected">
+                        <span class="material-symbols-rounded nav-btn">home</span>
+                        <span>Accueil</span>
+                    </a>
+                </div>
+
+                <div>
+                    <p>RECLAMATIONS</p>
+
+                    <a routerLink="/submit_rec" class="link">
+                        <span class="material-symbols-rounded nav-btn">add_circle</span>
+                        <span>Soumettre une réclamation</span>
+                    </a>
+
+                    <a routerLink="/consult_rec" class="link">
+                        <span class="material-symbols-rounded nav-btn">search</span>
+                        <span>Consulter vos réclamations</span>
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
+
+            <a routerLink="/page_user" class="logo">
+                <img src="/images/logo.png" alt="logo">
+                <p>e-Contribuable</p>
+            </a>
+            <div class="btn">
+                <span class="material-symbols-rounded notif-btn" (click)="toggleNotifs()">notifications</span>
+                <span class="material-symbols-rounded settings-btn" (click)="toggleSettings()">settings</span>
+            </div>
+
+            <div class="dropdown notifs" [class.active]="notifsOpen">
+
+                <div *ngIf="notifications.length === 0 && notifications_read.length === 0" class="empty">
+                    Aucune notification
+                </div>
+
+                <ul *ngIf="notifications.length > 0">
+                    <li *ngFor="let notif of notifications" (click)="markAsRead(notif)" class="not_unread">
+                        <div class="notif-content">{{ notif.content }}</div>
+                        <div class="notif-date">{{ notif.date | date:'short' }}</div>
+                    </li>
+                </ul>
+
+                <ul *ngIf="notifications_read.length > 0">
+                    <li *ngFor="let notif of notifications_read" (click)="markAsRead(notif)" class="not_read">
+                        <div class="notif-content">{{ notif.content }}</div>
+                        <div class="notif-date">{{ notif.date | date:'short' }}</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown settings" [class.active]="settingsOpen">
+                <div class="user">
+                    <p>{{ this.displayName }}</p>
+                </div>
+                <div class="setting">
+                    <div class="param" (click)="goProfile()">
+                        <span class="material-symbols-rounded">account_circle</span>
+                        <p>Profil</p>
+                    </div>
+
+                    <div class="param" (click)="logout()">
+                        <span class="material-symbols-rounded logout-btn" (click)="logout()">logout</span>
+                        <p>Se déconnecter</p>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+    </header>
+
+    <div class="wrapper">
+
+        <p>
+            Navigation / <strong>Accueil</strong>
+        </p>
+
+        <section class="hero">
+            <div class="titre">
+                Bienvenue {{ this.displayName }} sur votre espace contribuable!
+            </div>
+            <div class="sous-titre">
+                Soumettre des réclamations, suivre leurs traitements ainsi qu'interagir avec un chatbot
+            </div>
+        </section>
+
+        <span>Concernant vos réclamations</span>
+        <section class="infos">
+            <div class="sec">
+                <div class="text">{{stats.nb_rec}} réclamations en total</div>
+
+                <div class="bar-container">
+                    <div class="bar blue" style="width: 100%;"></div>
+                </div>
+            </div>
+            
+            <div class="sec">
+                <div class="text">{{stats.nb_rec_acc}} réclamations approuvées par agents</div>
+                
+                <div class="bar-container">
+                    <div class="bar green" [style.width.%]="accPercent"></div>
+                </div>
+                
+            </div>
+
+            <div class="sec">
+                <div class="text">{{stats.nb_rec_ref}} réclamations refusées par agents</div>
+
+                <div class="bar-container">
+                    <div class="bar red" [style.width.%]="refPercent"></div>
+                </div>
+            </div>
+
+            <div class="sec">
+                <div class="text">{{stats.nb_rec_non_t}} réclamations pas encore traitées</div>
+                
+                <div class="bar-container">
+                    <div class="bar yellow" [style.width.%]="nonTPercent"></div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="contact">
+            <div class="titre">
+                Besoin d'aide?
+            </div>
+            <div class="sous-titre">
+                Contactez notre support ou consultez la page FAQ.
+            </div>
+            <a routerLink="/contact" class="btn">Nous contacter</a>
+        </section>
+    </div>
+
+    <div class="chat-container" [class.open]="isOpen">
+        <button class="chat-toggle" (click)="toggleChat()">
+            <span class="material-symbols-rounded">chat_bubble</span>
+        </button>
+
+        <div class="chat-box">
+            <div class="chat-header">
+                <span>Chatbot</span>
+                <button (click)="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </div>
+
+            <div class="chat-messages" #chatMessagesContainer>
+                <div>
+                    <div class="bot-msg">Bonjour ! Je suis votre assistant virtuel. Posez-moi vos questions concernant vos obligations fiscales, je suis là pour vous aider.</div>
+                </div>
+                
+                <div *ngFor="let msg of messages">
+                    <div class="user-msg"> {{ msg.input }}</div>
+                    <div class="bot-msg"> {{ msg.output }}</div>
+                </div>
+                
+                <div *ngIf="isTyping" class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <form (ngSubmit)="sendMessage()">
+                <textarea [(ngModel)]="userInput" name="question" placeholder="Écrivez quelque chose..." rows="1" (input)="autoResize($event)" (keydown)="handleKeyDown($event)" style="overflow:hidden; resize:none; width: 100%; line-height: 1.5;" required></textarea>
+                <button type="submit" class="send-button" aria-label="Envoyer">
+                    <span class="material-symbols-rounded">send</span>
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 e-Contribuable - Tous droits réservés</p>
+    </footer>
+
+</div>

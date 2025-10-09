@@ -1,0 +1,329 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+@keyframes floating {
+  from {
+    transform: rotate(0deg) translate(-10px) rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg) translate(-10px) rotate(-360deg);
+  }
+}
+
+.auth_bg {
+    background-size: cover;
+    overflow: hidden;
+}
+
+.auth-bg .r {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+}
+
+.auth-bg .r:first-child {
+  top: -50px;
+  right: 250px;
+  background: #1DE0C1;
+}
+
+.auth-bg .r:last-child {
+  left: 250px;
+  bottom: -50px;
+  background: #9893D4;
+}
+
+.auth-bg .r.s {
+  width: 20px;
+  height: 20px;
+}
+
+.auth-bg .r.s:nth-child(2) {
+  top: 250px;
+  right: 250px;
+  background: #04A9F5;
+}
+
+.auth-bg .r.s:nth-child(3) {
+  left: 250px;
+  bottom: 250px;
+  background: #1DE9B6;
+}
+
+.auth-bg .r:nth-child(odd) {
+  animation: floating 7s infinite;
+}
+
+.auth-bg .r:nth-child(even) {
+  animation: floating 9s infinite;
+}
+
+.form-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    width: 100%;
+    max-width: 350px;
+    background: #fff;
+    border: 2px solid #fff;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+    transition: transform 0.3s ease, opacity 0.1s;
+    border-radius: 3px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+
+}
+
+.form-popup .form-box {
+    display: flex;
+    padding: 15px 15px;
+}
+
+.form-box .form-content {
+    width: 100%;
+    padding: 20px;
+}
+.form-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+form .input-field {
+    position: relative;
+    height: 50px;
+    width: 100%;
+    margin-top: 15px;
+}
+.input-field input {
+    height: 100%;
+    width: 100%;
+    background: none;
+    outline: none;
+    font-size: 14px;
+    padding: 0 15px;
+    border: 1px solid #717171;
+    border-radius: 3px;
+}
+.input-field input:focus {
+    border: 1px solid #04A9F5;
+}
+.input-field label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    color: #4a4646;
+    pointer-events: none;
+    transition: 0.2s ease;
+    font-size: 14px;
+}
+.input-field input:is(:focus, :valid) {
+    padding: 16px 15px 0;
+}
+.input-field input:is(:focus, :valid)~label {
+    transform: translateY(-120%);
+    color: #04A9F5;
+    font-size: 11px;
+}
+.policy-text {
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start, baseline;
+}
+
+.terms{
+    font-size: 14px;
+}
+
+/* Container fixed on top right */
+.error-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Bubble style for each error */
+.error-message {
+  position: relative;
+  background-color: #f44336; /* red */
+  color: white;
+  padding: 20px 20px;
+  padding-right: 40px;
+  border-radius: 3px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.approve-message {
+  position: relative;
+  background-color: #1DE0C1;
+  color: white;
+  padding: 20px 20px;
+  padding-right: 40px;
+  border-radius: 3px;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-in-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+.close-btn {
+  position: absolute;
+  right: 12px;
+  top: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: white;
+}
+.close-btn:hover {
+  color: #ddd;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-5px); }
+}
+
+.form-error-banner {
+  color: #b00020;
+  text-align: center;
+  padding: 5px 5px;
+  margin-bottom: 15px;
+  font-weight: 500;
+  font-size: 15px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+
+.form-box a {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 14px;
+}
+.form-box a:hover {
+    cursor: pointer;
+}
+.bottom-link{
+    font-size: 14px;
+}
+form :where(.forgot-pass-link, .policy-text) {
+    display: inline-flex;
+    margin-top: 13px;
+    font-size: 14px;
+}
+.button {
+    display: flex;
+    justify-content: center;
+    margin-top: -5px;
+}
+form button {
+    display: block; 
+    width: 100%;
+    width: 140px;
+    color: #fff;
+    border: none;
+    outline: none;
+    padding: 14px 0;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 3px;
+    cursor: pointer;
+    margin: 25px 0;
+    background: #04A9F5;
+    transition: 0.2s ease;
+}
+
+form button:hover {
+    background: #0787c2;
+}
+.form-content .bottom-link {
+    text-align: center;
+}
+.form-popup .signup {
+    display: none;
+}
+.form-popup.show-signup .signup {
+    display: flex;
+}
+.form-popup.show-signup .login {
+    display: none;
+}
+.signup .policy-text {
+    display: flex;
+    margin-top: 14px;
+    align-items: center;
+}
+
+
+
+.checkbox-wrapper input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  top: 9px;
+  right: 2px;
+  width: 25px;
+  height: 25px;
+  border-color: 3px solid #04A9F5;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: border 0.2s ease;
+}
+
+.checkbox-wrapper input[type="checkbox"]:not(:checked) {
+    border: 1px solid #807a7a;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked {
+  border: 3px solid #04A9F5;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 6px;
+  width: 6px;
+  height: 15px;
+  border: 3px solid #04A9F5;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+
+@media (max-width: 760px) {
+    .form-popup {
+        width: 95%;
+    }
+    .form-box .form-details {
+        display: none;
+    }
+    .form-box .form-content {
+        padding: 30px 20px;
+    }
+}

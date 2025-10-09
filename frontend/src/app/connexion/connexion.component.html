@@ -1,0 +1,141 @@
+<div class="body">
+    <div class="auth-bg">
+      <span class="r"></span>
+      <span class="r s"></span>
+      <span class="r s"></span>
+      <span class="r"></span>
+    </div>
+
+    <div class="error-container">
+        <div *ngIf="emailInvalid" class="error-message email" >
+            Donner une adresse mail valide
+            <span class="close-btn" (click)="dismissError('email')">&times;</span>
+        </div>
+
+        <div *ngIf="mdpError" class="error-message mdp">
+            Doit être minimum 8 caractères
+            <span class="close-btn" (click)="dismissError('mdp')">&times;</span>
+        </div>
+
+        <div *ngIf="nifError" class="error-message nif">
+            NIF doit être numérique
+            <span class="close-btn" (click)="dismissError('nif')">&times;</span>
+        </div>
+
+        <div *ngIf="emailInvalidS" class="error-message emailS" >
+            Donner une adresse mail valide
+            <span class="close-btn" (click)="dismissError('emailS')">&times;</span>
+        </div>
+
+        <div *ngIf="mdpErrorS" class="error-message mdpS">
+            Doit être minimum 8 caractères
+            <span class="close-btn" (click)="dismissError('mdpS')">&times;</span>
+        </div>
+
+        <div *ngIf="mdpMismatch" class="error-message mdpMis">
+            Mots de passe non similaires
+            <span class="close-btn" (click)="dismissError('mdpMis')">&times;</span>
+        </div>
+
+        <div *ngIf="!termsAccepted" class="error-message terms">
+            Vous devez accepter les termes
+            <span class="close-btn" (click)="dismissError('terms')">&times;</span>
+        </div>
+        
+        <div *ngIf="serverErrorVisible" class="error-message server-error">
+            {{ serverErrorMessage }}
+            <span class="close-btn" (click)="dismissServerError()">&times;</span>
+        </div>
+
+        <div *ngIf="acceptVisible" class="approve-message">
+            {{ acceptMessage }}
+            <span class="close-btn" (click)="dismissAcceptMessage()">&times;</span>
+        </div>
+
+    </div>
+
+
+    <div class="form-popup">
+        <div class="form-box login">
+
+            <div class="form-content">
+                <h2>Connexion</h2>
+
+                <div *ngIf="formHasErrors" class="form-error-banner">
+                    Veuillez corriger les erreurs dans le formulaire
+                </div>
+
+                <form #loginForm="ngForm" (ngSubmit)="onLogin()">
+                    <div class="input-field">
+                        <input type="text" [(ngModel)]="emailLogin" name="emailLogin" (blur)="checkEmailValidity()" required>
+                        <label>Email</label>
+                    </div>
+
+                    <div class="input-field">
+                        <input type="password" [(ngModel)]="mdpLogin" name="mdpLogin" (blur)="validatePassword()" required>
+                        <label>Mot de passe</label>
+                    </div>
+                    
+                    <div class="button">
+                        <button type="submit" >Se connecter</button>
+                    </div>
+                </form>
+                <div class="bottom-link">
+                    Vous n'avez pas de compte?
+                    <a href="#" id="signup-link" (click)="clearInputsLogin()">Inscrivez-vous</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-box signup">
+
+            <div class="form-content">
+                <h2>Inscription</h2>
+
+                <div *ngIf="formHasErrorsS" class="form-error-banner">
+                    Veuillez corriger les erreurs dans le formulaire
+                </div>
+
+                <form #signupForm="ngForm" (ngSubmit)="onSignup()">
+                    <div class="input-field">
+                        <input type="text" [(ngModel)]="nifSignup" name="nifSignup" (blur)="validateNIF()" required>
+                        <label>NIF</label>
+                    </div>
+                    
+                    <div class="input-field">
+                        <input type="text" [(ngModel)]="emailSignup" name="emailSignup" (blur)="checkEmailValidityS()" required>
+                        <label>Email</label>
+                    </div>
+                    
+                    <div class="input-field">
+                        <input type="password" [(ngModel)]="mdpSignup" name="mdpSignup" (blur)="validatePasswordS()" required>
+                        <label>Mot de passe</label>
+                    </div>
+                    
+                    <div class="input-field">
+                        <input type="password" [(ngModel)]="mdpVerifSignup" name="mdpVerifSignup" (blur)="checkPasswords()" required>
+                        <label>Vérifier votre mot de passe</label>
+                    </div>
+                      
+                    <div class="policy-text">
+                        <div class="checkbox-wrapper">
+                            <input class="terms" type="checkbox" id="policy" [(ngModel)]="termsAccepted" name="termsAccepted" (input)="validateTerms()" required>
+                            <label class="terms" for="policy">
+                                J'accepte les 
+                                <a routerLink="/policy" class="option">termes et conditions</a>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="button">
+                        <button type="submit">S'inscrire</button>
+                    </div>
+                    
+                </form>
+                <div class="bottom-link">
+                    Vous avez déjà un compte? 
+                    <a href="#" id="login-link" (click)="clearInputsSignup()">Se connecter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

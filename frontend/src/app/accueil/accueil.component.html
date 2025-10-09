@@ -1,0 +1,50 @@
+<div class="body">
+    <header>
+        <nav class="navbar">
+            <a routerLink="/accueil" class="logo">
+                <img src="/images/logo.png" alt="logo">
+                <h2>e-Contribuable</h2>
+            </a>
+            <a routerLink="/connexion" class="login">Se connecter</a>
+        </nav>
+    </header>
+    <div class="wrapper">
+        <section class="hero">
+            <div class="titre">
+                Simplifier votre démarche fiscales
+            </div>
+            <div class="sous-titre">
+                Soumettez vos réclamations en toutes sécurité et suivez leur traitement en ligne.
+            </div>
+        </section>
+
+        <section class="features-slider">
+            <div class="slides-container" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
+                <div class="slide" *ngFor="let slide of slides">
+                    <h3>{{ slide.title }}</h3>
+                    <p>{{ slide.text }}</p>
+                    <a *ngIf="slide.link" [routerLink]="slide.link" class="cta-btn">Inscrivez-vous ici</a>
+                </div>
+            </div>
+
+            <div class="slider-controls">
+                <button class="prev" (click)="showPreviousSlide()">❮</button>
+                <button class="next" (click)="showNextSlide()">❯</button>
+            </div>
+        </section>
+
+        <section class="contact">
+            <div class="titre">
+                Besoin d'aide?
+            </div>
+            <div class="sous-titre">
+                Contactez notre support ou consultez la page FAQ.
+            </div>
+            <a routerLink="/contact" class="btn">Nous contacter</a>
+        </section>
+    </div>
+    <footer>
+        <p>&copy; 2025 e-Contribuable - Tous droits réservés.</p>
+    </footer>
+    
+</div>

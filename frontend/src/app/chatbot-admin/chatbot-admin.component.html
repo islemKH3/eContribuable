@@ -1,0 +1,152 @@
+<div class="body">
+
+  <header>
+    <nav class="navbar">
+      <span class="material-symbols-rounded menu-btn" (click)="toggleMenu()">notes</span>
+      <div class="side-menu" [class.active]="menuOpen">
+
+        <a routerLink="/page_admin" class="logo-full">
+            <img src="/images/logo.png" alt="logo">
+            <p>e-Contribuable</p>
+        </a>
+
+        <div>
+          <p>NAVIGATION</p>
+          <a routerLink="/page_admin" class="link">
+            <span class="material-symbols-rounded nav-btn">home</span>
+            <span>Accueil</span>
+          </a>
+        </div>
+                
+        <div>
+          <p>RECLAMATIONS</p>
+          <a routerLink="/admin_rec" class="link">
+            <span class="material-symbols-rounded nav-btn">quick_reference</span>
+            <span>Réclamations fiscales</span>
+          </a>
+        </div>
+                
+        <div>
+          <p>UTILISATEURS</p>
+
+          <a routerLink="/utilisateur" class="link">
+            <span class="material-symbols-rounded nav-btn">group</span>
+            <span>Contribuables inscrits</span>
+          </a>
+                    
+          <a routerLink="/inscription" class="link">
+            <span class="material-symbols-rounded nav-btn">manage_accounts</span>
+            <span>Demandes d'inscription</span>
+          </a>
+        </div>
+                
+
+        <div>
+          <p>CONVERSATIONS</p>
+          <a routerLink="/admin_chatbot" class="link selected">
+            <span class="material-symbols-rounded nav-btn">forum</span>
+            <span>Entre chatbot et utilisateurs</span>
+          </a>
+        </div>
+        
+      </div>
+
+      <div class="overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
+
+      <a routerLink="/page_admin" class="logo">
+        <img src="/images/logo.png" alt="logo">
+        <p>e-Contribuable</p>
+      </a>
+      <div class="btn">
+        <span class="material-symbols-rounded notif-btn" (click)="toggleNotifs()">notifications</span>
+        <span class="material-symbols-rounded settings-btn" (click)="toggleSettings()">settings</span>
+      </div>
+      
+      <div class="dropdown notifs" [class.active]="notifsOpen">
+        <div *ngIf="notifications.length === 0 && notifications_read.length === 0" class="empty">
+          Aucune notification
+        </div>
+
+        <ul *ngIf="notifications.length > 0">
+          <li *ngFor="let notif of notifications" (click)="markAsRead(notif)" class="not_unread">
+            <div class="notif-content">{{ notif.content }}</div>
+            <div class="notif-date">{{ notif.date | date:'short' }}</div>
+          </li>
+        </ul>
+
+        <ul *ngIf="notifications_read.length > 0">
+          <li *ngFor="let notif of notifications_read" (click)="markAsRead(notif)" class="not_read">
+            <div class="notif-content">{{ notif.content }}</div>
+            <div class="notif-date">{{ notif.date | date:'short' }}</div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="dropdown settings" [class.active]="settingsOpen">
+        <div class="user">
+          <p>{{this.displayName}}</p>
+        </div>
+        <div class="setting">
+          <div class="param" (click)="goProfile()">
+            <span class="material-symbols-rounded">account_circle</span>
+            <p>Profil</p>
+          </div>
+
+          <div class="param" (click)="logout()">
+            <span class="material-symbols-rounded logout-btn" (click)="logout()">logout</span>
+            <p>Se déconnecter</p>
+          </div>
+        </div>                
+      </div>
+
+    </nav>
+  </header>
+
+  <div class="content-wrapper">
+
+    <p>
+        Conversations / <strong>Entre chatbot et utilisateurs</strong>
+    </p>
+
+    <table class="content-container" *ngIf="chats.length > 0; else noChats">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Utilisateur</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let chat of chats">
+          <td>{{ chat.date | date:'short' }}</td>
+          <td>{{ chat.prenom }} {{ chat.nom }}</td>
+          <td>
+
+            <button class="expand-btn" (click)="openChat(chat.utilisateur)" title="Voir plus">
+              Voir plus
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <ng-template #noChats>
+      <p>Pas de chats trouvés.</p>
+    </ng-template>
+
+
+    <div class="overlaypop" *ngIf="activeChat" (click)="closePopup()">
+          
+      <div class="popup">
+
+        <div class="chat-messages">
+          <div *ngFor="let msg of messages">
+              <div class="user-msg"> {{ msg.input }}</div>
+              <div class="bot-msg"> {{ msg.output }}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

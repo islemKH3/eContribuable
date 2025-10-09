@@ -1,0 +1,144 @@
+<div class="body">
+
+    <header>
+        <nav class="navbar">
+            <span class="material-symbols-rounded menu-btn" (click)="toggleMenu()">notes</span>
+
+            <div class="side-menu" [class.active]="menuOpen">
+
+                <a routerLink="/page_agent" class="logo-full">
+                    <img src="/images/logo.png" alt="logo">
+                    <p>e-Contribuable</p>
+                </a>
+                
+                <div>
+                    <p>NAVIGATION</p>
+                    <a routerLink="/page_agent" class="link">
+                        <span class="material-symbols-rounded nav-btn">home</span>
+                        <span>Accueil</span>
+                    </a>
+                    <a routerLink="/dashboard" class="link selected">
+                        <span class="material-symbols-rounded nav-btn">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                
+
+                <div>
+                    <p>RECLAMATIONS</p>
+                    <a routerLink="/agent_rec" class="link">
+                        <span class="material-symbols-rounded nav-btn">quick_reference</span>
+                        <span>Traiter des réclamations</span>
+                    </a>
+                </div>
+                
+        
+            </div>
+
+            <div class="overlay" [class.active]="menuOpen" (click)="closeMenu()"></div>
+
+            <a routerLink="/page_agent" class="logo">
+                <img src="/images/logo.png" alt="logo">
+                <p>e-Contribuable</p>
+            </a>
+            <div class="btn">
+                <span class="material-symbols-rounded notif-btn" (click)="toggleNotifs()">notifications</span>
+                <span class="material-symbols-rounded settings-btn" (click)="toggleSettings()">settings</span>
+            </div>
+            
+            <div class="dropdown notifs" [class.active]="notifsOpen">
+
+                <div *ngIf="notifications.length === 0 && notifications_read.length === 0" class="empty">
+                    Aucune notification
+                </div>
+
+                <ul *ngIf="notifications.length > 0">
+                    <li *ngFor="let notif of notifications" (click)="markAsRead(notif)" class="not_unread">
+                        <div class="notif-content">{{ notif.content }}</div>
+                        <div class="notif-date">{{ notif.date | date:'short' }}</div>
+                    </li>
+                </ul>
+
+                <ul *ngIf="notifications_read.length > 0">
+                    <li *ngFor="let notif of notifications_read" (click)="markAsRead(notif)" class="not_read">
+                        <div class="notif-content">{{ notif.content }}</div>
+                        <div class="notif-date">{{ notif.date | date:'short' }}</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown settings" [class.active]="settingsOpen">
+                <div class="user">
+                    <p>{{this.displayName}}</p>
+                </div>
+                <div class="setting">
+                    <div class="param" (click)="goProfile()">
+                        <span class="material-symbols-rounded">account_circle</span>
+                        <p>Profil</p>
+                    </div>
+
+                    <div class="param" (click)="logout()">
+                        <span class="material-symbols-rounded logout-btn" (click)="logout()">logout</span>
+                        <p>Se déconnecter</p>
+                    </div>
+                </div>               
+            </div>
+
+        </nav>
+    </header>
+
+    <div class="wrapper">
+        <p>
+            Navigation / <strong>Dashboard</strong>
+        </p>
+
+        <p>Statistiques globales des réclamations</p>
+
+        <table class="content-container" *ngIf="stats.length > 0">
+            <tr>
+                <th>Agent</th>
+                <th>Traité</th>
+                <th>Accepté</th>
+                <th>Refusé</th>
+            </tr>
+
+            <tr *ngFor="let agent of stats">
+                <td>{{ agent.nom }} {{ agent.prenom }}</td>
+                <td>{{ agent.totalTraite }}</td>
+                <td>{{ agent.totalAccepte }}</td>
+                <td>{{ agent.totalRefuse }}</td>
+            </tr>
+        </table>
+
+        <div class="dashboard-section">
+            <p>Agent ayant refusé le plus</p>
+            <div *ngIf="topRefuseur">
+                <p><b>{{ topRefuseur.nom }} {{ topRefuseur.prenom }}</b> - {{ topRefuseur.totalRefuse }} refus</p>
+                <ul>
+                    <li *ngFor="let rec of topRefuseur.reclamations_refuse" class="refuse">
+                        Réclamation #{{ rec.id }} : {{ rec.objet }}<br>
+                        <i>Raison : {{ rec.raison_refus }}</i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-section">
+            <p>Agent ayant accepté le plus</p>
+            <div *ngIf="topAccepteur">
+                <p><b>{{ topAccepteur.nom }} {{ topAccepteur.prenom }}</b> - {{ topAccepteur.totalAccepte }} acceptations</p>
+                <ul>
+                    <li *ngFor="let rec of topAccepteur.reclamations_accept" class="accept">
+                        Réclamation #{{ rec.id }} : {{ rec.objet }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 e-Contribuable - Tous droits réservés.</p>
+    </footer>
+
+</div>

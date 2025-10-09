@@ -8,6 +8,7 @@ Il s’agit d’une application Flask permettant aux contribuables d’interagir
 Le chatbot utilise un modèle d’**embeddings** pour rechercher les réponses les plus pertinentes selon la similarité sémantique entre la question de l’utilisateur et les entrées du dataset.
 
 ### 📁 Contenu:
+
 - **app.py** → Script principal du chatbot (Flask API)  
 - **question.csv** → Dataset original contenant les questions/réponses  
 - **question_clean.csv** → Version nettoyée du dataset  
@@ -51,6 +52,7 @@ It is a Flask-based application that allows taxpayers to interact with a chatbot
 The chatbot uses **embeddings** to find the most relevant answer according to the semantic similarity between the user’s question and the dataset entries.
 
 ### 📁 Contents
+
 - **app.py** → Main Flask script for the chatbot
 - **questions.csv** → Original dataset with questions and answers
 - **questions_clean.csv** → Cleaned dataset

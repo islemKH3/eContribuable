@@ -1,8 +1,8 @@
-# 🤖 Chatbot Fiscal – e-Contribuable
+# 🤖 Chatbot Fiscal – eContribuable
 
 ## 🇫🇷 Description (Français)
 
-Ce dossier contient le module **Chatbot** du projet e-Contribuable.  
+Ce dossier contient le module **Chatbot** du projet eContribuable.  
 Il s’agit d’une application Flask permettant aux contribuables d’interagir avec un chatbot afin d’obtenir des informations fiscales, basées sur un dataset contenant des questions/réponses courantes.
 
 Le chatbot utilise un modèle d’**embeddings** pour rechercher les réponses les plus pertinentes selon la similarité sémantique entre la question de l’utilisateur et les entrées du dataset.
@@ -45,7 +45,7 @@ http://127.0.0.1:5000
 
 ## 🇬🇧 Description (English)
 
-This folder contains the **Chatbot** module of the e-Contribuable project.
+This folder contains the **Chatbot** module of the eContribuable project.
 It is a Flask-based application that allows taxpayers to interact with a chatbot to obtain tax-related information, based on a dataset of common questions and answers.
 
 The chatbot uses **embeddings** to find the most relevant answer according to the semantic similarity between the user’s question and the dataset entries.
